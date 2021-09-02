@@ -1,0 +1,123 @@
+/*Header css*/
+header {
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  height: 56px;
+  text-align: center;
+  background-color: $white;
+
+  /*navbar*/
+  .navbar {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    &__hamburger {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+    }
+    &__toggle:checked ~ .navbar__nav-list {
+      transition: transform 0.3s ease-out;
+      transform: scale(1, 1);
+      > .navbar__nav-list__item {
+        opacity: 1;
+      }
+    }
+    &__nav-list {
+      position: absolute;
+      top: 56px;
+      width: 100%;
+      background: $white;
+      box-shadow: 0 2px 2px 2px $nav-divider-color;
+      transform-origin: top;
+      transform: scale(1, 0);
+      &__item {
+        height: 72px;
+        border-top: 1px solid $nav-divider-color;
+        margin: 0 14.5px;
+        transition: opacity 0.2s ease-out 0.15s;
+        opacity: 0;
+      }
+      &__link,
+      &__link:active {
+        @include font-setting(16px);
+        line-height: 72px;
+      }
+    }
+    &__brand {
+      @extend %position-center;
+      width: 136px;
+      height: 24px;
+    }
+    &__tool-list {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 150px;
+      height: 72px;
+      margin: 0 auto;
+      &__item {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+}
+
+/********* Header 桌機版樣式 *********/
+
+@media screen and (min-width: 768px) {
+  header {
+    height: 60px;
+    .navbar {
+      width: 85%;
+      margin: 0 auto;
+      &__hamburger {
+        display: none;
+      }
+      &__nav-list {
+        position: static;
+        top: 0;
+        display: flex;
+        box-shadow: none;
+        transform: scale(1, 1);
+        &__item {
+          height: 60px;
+          border-top: none;
+          margin: 0 auto;
+          opacity: 1;
+          flex: 0.1 1;
+        }
+        &__item:last-child {
+          flex: 1 1;
+        }
+        &__link,
+        &__link:active {
+          line-height: 60px;
+        }
+      }
+      &__brand {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      &__tool-list {
+        position: absolute;
+        right: 0;
+        justify-content: flex-end;
+        width: auto;
+        height: 60px;
+        &__item {
+          margin-left: 32px;
+        }
+      }
+    }
+  }
+}

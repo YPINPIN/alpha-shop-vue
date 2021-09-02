@@ -1,0 +1,53 @@
+/*Footer css*/
+footer {
+  display: none;
+  height: 284px;
+  background-color: $footer-bg;
+  .wrapper {
+    width: 85%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    > section {
+      flex: 1 1;
+      margin-top: 64px;
+    }
+    > section:first-child {
+      margin-top: 126px;
+    }
+    a {
+      display: block;
+    }
+    .footer {
+      &__brand {
+        width: 136px;
+        height: 24px;
+      }
+      &__title {
+        margin-bottom: 24px;
+        @include font-setting(24px, bold, $dark-gray);
+        line-height: 24px;
+      }
+      &__item {
+        margin-bottom: 8px;
+        @include font-setting(16px, normal, $form-label-color);
+        line-height: 17px;
+      }
+      &__social-media {
+        display: flex;
+        &__icon {
+          width: 24px;
+          height: 24px;
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  footer {
+    display: block;
+  }
+}
