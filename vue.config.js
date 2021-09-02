@@ -3,9 +3,9 @@ module.exports = {
     loaderOptions: {
       scss: {
         additionalData: `
-          @import "@/styles/global/_reset.scss";
-          @import "@/styles/global/_color.scss";
-          @import "@/styles/global/_base.scss";
+          @import "@/assets/scss/global/_reset.scss";
+          @import "@/assets/scss/global/_color.scss";
+          @import "@/assets/scss/global/_base.scss";
         `
       }
     }
