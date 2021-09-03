@@ -1,0 +1,99 @@
+/*Stepper css*/
+// 建立步驟數字
+@mixin getStepNums($num) {
+  @for $i from 1 through $num {
+    &:nth-child(#{$i}) &__circle::after {
+      content: '#{$i}';
+      @extend %position-center;
+      @include font-setting(16px, bold, null, $nunito-sans-font);
+      line-height: 16px;
+    }
+    // 分配大小
+    &:nth-child(#{$i}) {
+      @if $i != $num {
+        flex: 1 1;
+      } @else {
+        flex: none;
+      }
+    }
+  }
+}
+
+.stepper {
+  padding-top: 16px;
+  &__title {
+    @include font-setting(24px, bold, null, null);
+    line-height: 38px;
+  }
+  &__panel {
+    margin-top: 24px;
+    display: flex;
+  }
+  &__step {
+    display: flex;
+    align-items: center;
+    position: relative;
+    color: $normal-gray;
+    @include getStepNums($stepper-num);
+    // 圓圈
+    &__circle {
+      position: relative;
+      width: 32px;
+      height: 32px;
+      border: 1px solid $normal-gray;
+      border-radius: 50%;
+      background: transparent;
+      text-align: center;
+    }
+    // 步驟文字
+    &__label {
+      display: none;
+    }
+    // 連接線
+    &__line {
+      height: 2px;
+      background-color: $normal-gray;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 32px;
+      left: 32px + 32px;
+    }
+    &.checked &__circle {
+      &::after {
+        content: '\2714';
+        color: $white;
+      }
+      background-color: $dark-gray;
+      border-color: $dark-gray;
+    }
+    &.active &__circle {
+      color: $dark-gray;
+      border-color: $dark-gray;
+    }
+    &.checked &__line,
+    &.active &__line {
+      background-color: $dark-gray;
+    }
+  }
+}
+
+/********* Stepper 桌機版樣式 *********/
+@media screen and (min-width: 376px) {
+  .stepper {
+    &__step {
+      // 步驟文字
+      &__label {
+        margin-left: 0.5rem;
+        display: inline;
+      }
+      &__line {
+        left: calc(32px + 4.5rem + 32px);
+      }
+      &.checked &__label,
+      &.active &__label {
+        color: $dark-gray;
+      }
+    }
+  }
+}

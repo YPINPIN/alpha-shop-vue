@@ -6,5 +6,50 @@ main {
   padding-bottom: 40px;
 }
 
+.container {
+  padding: 0 15px;
+}
+
+/*Stepper*/
+// 總步驟數
+$stepper-num: 3;
+@import './stepper';
+
 /*Footer*/
 @import './footer';
+
+/********* main 桌機版樣式 *********/
+@media screen and (min-width: 768px) {
+  main {
+    padding-top: 136px;
+    width: 85%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(300px, 6fr) minmax(auto, 100px) minmax(
+        410px,
+        5fr
+      );
+    grid-template-rows: 32px auto auto auto 32px;
+    grid-template-areas:
+      'stepper . cart'
+      'stepper . cart'
+      'form-panel . cart'
+      'btn-control . cart'
+      'btn-control . .';
+    // grid-gap: 24px;
+    section {
+      &.stepper {
+        grid-area: stepper;
+      }
+      &.form-panel {
+        grid-area: form-panel;
+      }
+      &.cart {
+        grid-area: cart;
+      }
+      &.btn-control {
+        grid-area: btn-control;
+      }
+    }
+  }
+}
