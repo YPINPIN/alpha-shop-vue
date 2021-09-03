@@ -15,6 +15,12 @@ main {
 $stepper-num: 3;
 @import './stepper';
 
+/*Form*/
+@import './form';
+
+/*BtnControl*/
+@import './btnControl';
+
 /*Footer*/
 @import './footer';
 

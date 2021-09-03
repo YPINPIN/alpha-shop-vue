@@ -14,7 +14,25 @@ const routes = [
   {
     path: '/purchase',
     name: 'purchase',
+    redirect: '/purchase/address',
     component: Purchase,
+    children: [
+      {
+        path: 'address',
+        name: 'purchase-address',
+        component: () => import('../views/PurchaseAddress.vue')
+      },
+      {
+        path: 'delivery',
+        name: 'purchase-delivery',
+        component: () => import('../views/PurchaseDelivery.vue')
+      },
+      {
+        path: 'payment',
+        name: 'purchase-payment',
+        component: () => import('../views/PurchasePayment.vue')
+      },
+    ]
   },
   {
     path: '*',

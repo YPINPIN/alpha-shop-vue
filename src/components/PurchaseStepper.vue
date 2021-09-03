@@ -7,12 +7,12 @@
         :key="index"
         :class="[
           'stepper__step',
-          { active: stepper.currentStep >= index },
-          { checked: stepper.currentStep > index },
+          { active: currentStep >= index },
+          { checked: currentStep > index },
         ]"
       >
         <div class="stepper__step__circle"></div>
-        <span class="stepper__step__label">{{ step }}</span>
+        <span class="stepper__step__label">{{ step.title }}</span>
         <div class="stepper__step__line"></div>
       </div>
     </div>
@@ -24,6 +24,10 @@ export default {
   props: {
     stepper: {
       type: Object,
+      required: true,
+    },
+    currentStep: {
+      type: Number,
       required: true,
     },
   },

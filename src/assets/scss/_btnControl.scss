@@ -1,0 +1,54 @@
+/*BtnControl css*/
+.btn-control {
+  margin-top: 32px;
+  &__panel {
+    padding-top: 24px;
+    border-top: 1px solid $btn-control-border-color;
+    @include font-setting(14px, normal, $black, $inter-font);
+    line-height: 20px;
+  }
+  &__btn-prev,
+  &__btn-next {
+    flex: 1;
+    width: 156px;
+    height: 46px;
+    border-radius: 8px;
+    color: $black;
+    background-color: $btn-control-prev-color;
+    &.active {
+      color: $white;
+      background-color: $btn-control-next-color;
+    }
+    &.disabled {
+      display: none;
+    }
+  }
+  &__btn-prev {
+    margin-right: 1rem;
+    &::before {
+      content: '\2190';
+      margin-right: 13.5px;
+    }
+  }
+  &__btn-next {
+    margin-left: 1rem;
+    &::after {
+      content: '\2192';
+      margin-left: 13.5px;
+    }
+  }
+}
+
+/********* BtnControl 桌機版樣式 *********/
+@media screen and (min-width: 576px) {
+  .btn-control {
+    &__btn-prev,
+    &__btn-next {
+      max-width: 174px;
+      &.disabled {
+        display: inline-block;
+        visibility: hidden;
+      }
+    }
+  }
+}

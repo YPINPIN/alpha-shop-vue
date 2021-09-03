@@ -1,0 +1,191 @@
+/*Form css*/
+.form-panel {
+  padding-top: 24px;
+  input {
+    @extend %input-style;
+    width: 100%;
+    &[type='radio'] {
+      -webkit-appearance: none;
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      padding: 0;
+      margin: 0 auto;
+      border-radius: 50%;
+      background-color: $white;
+      &:checked {
+        box-shadow: inset 0 0 0 6px $dark-gray;
+        border: none;
+      }
+    }
+  }
+  select {
+    @extend %input-style;
+    cursor: pointer;
+    &:invalid {
+      color: $form-placeholder-color;
+    }
+    -webkit-appearance: none;
+    width: 100%;
+  }
+  .select-wrapper {
+    position: relative;
+    width: 100%;
+    z-index: 0;
+    &::after {
+      content: '';
+      border-style: solid;
+      border-width: 6px 5px 0 5px;
+      border-color: $dark-gray transparent transparent transparent;
+      position: absolute;
+      top: 50%;
+      right: 18px;
+      transform: translateY(-50%);
+      z-index: -1;
+    }
+  }
+  &__part {
+    // 表單標題
+    &__form-title {
+      @include font-setting(24px, bold);
+      line-height: 24px;
+      margin-bottom: 24px;
+    }
+    // 標單內容
+    &__content {
+      &__form-row {
+        margin-bottom: 24px;
+        &__input {
+          > label {
+            display: block;
+            @include font-setting(12px, bold, $form-label-color);
+            line-height: 16px;
+            margin-bottom: 8px;
+          }
+        }
+        &.address-wrapper {
+          margin-bottom: 0;
+        }
+        // 位置grid
+        &.name-wrapper {
+          display: grid;
+          grid-template-columns: minmax(auto, 133px) auto;
+          grid-gap: 30px;
+        }
+        &.contact-wrapper,
+        &.address-wrapper,
+        &.card-name-wrapper,
+        &.card-number-wrapper {
+          display: grid;
+          grid-template-columns: 1fr;
+          grid-gap: 16px;
+        }
+        &.card-code-wrapper {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-gap: 30px;
+        }
+        // delivery-wrapper
+        &.delivery-wrapper {
+          position: relative;
+          display: grid;
+          grid-template-columns: minmax(auto, 60px) 1fr minmax(auto, 60px);
+          grid-template-rows: 60px;
+          align-items: center;
+          .input-delivery {
+            // 點擊框
+            &::after {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              border: 1px solid $light-gray;
+              border-radius: 4px;
+            }
+            &:hover {
+              &::after {
+                border: 1px solid $normal-gray;
+              }
+            }
+            &:checked {
+              &::after {
+                border: 1px solid $dark-gray;
+              }
+            }
+            // 貨運資訊label
+            > label {
+              padding: 11px 0;
+            }
+            &__title {
+              @include font-setting(14px, bold, $black, $inter-font);
+              line-height: 20px;
+            }
+            &__time {
+              @include font-setting(12px, normal, $black, $inter-font);
+              line-height: 16px;
+            }
+            &__price {
+              align-self: start;
+              justify-self: end;
+              padding-top: 13px;
+              padding-right: 20px;
+              @include font-setting(12px, normal, $black, $inter-font);
+              line-height: 16px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/********* Form 桌機版樣式 *********/
+@media screen and (min-width: 768px) {
+  .form-panel {
+    &__part {
+      &__content {
+        &.delivery-content {
+          margin-bottom: 78px;
+
+          display: grid;
+          grid-template-columns: 5fr 1fr;
+          grid-template-rows: 60px 60px;
+          grid-gap: 24px;
+          grid-template-areas:
+            'standard .'
+            'dhl .';
+        }
+        &__form-row {
+          &.name-wrapper,
+          &.address-wrapper {
+            grid-template-columns: 1fr 2fr;
+            grid-gap: 30px;
+          }
+          &.contact-wrapper {
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 30px;
+          }
+          &.card-name-wrapper,
+          &.card-number-wrapper {
+            grid-template-columns: 2fr 1fr;
+            grid-gap: 30px;
+          }
+          &.card-code-wrapper {
+            margin-bottom: 0;
+          }
+          &.delivery-wrapper {
+            margin-bottom: 0;
+            &:nth-child(1) {
+              grid-area: standard;
+            }
+            &:nth-child(2) {
+              grid-area: dhl;
+            }
+          }
+        }
+      }
+    }
+  }
+}
