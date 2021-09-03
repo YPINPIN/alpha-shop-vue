@@ -24,19 +24,20 @@ $stepper-num: 3;
     padding-top: 136px;
     width: 85%;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: minmax(300px, 6fr) minmax(auto, 100px) minmax(
-        410px,
-        5fr
-      );
-    grid-template-rows: 32px auto auto auto 32px;
-    grid-template-areas:
-      'stepper . cart'
-      'stepper . cart'
-      'form-panel . cart'
-      'btn-control . cart'
-      'btn-control . .';
-    // grid-gap: 24px;
+    .container {
+      display: grid;
+      grid-template-columns: minmax(300px, 6fr) minmax(auto, 100px) minmax(
+          410px,
+          5fr
+        );
+      grid-template-rows: 32px auto auto auto 32px;
+      grid-template-areas:
+        'stepper . cart'
+        'stepper . cart'
+        'form-panel . cart'
+        'btn-control . cart'
+        'btn-control . .';
+    }
     section {
       &.stepper {
         grid-area: stepper;
