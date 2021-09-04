@@ -7,7 +7,8 @@
           <label>持卡人姓名</label>
           <input
             type="text"
-            name="card-name"
+            name="cardName"
+            v-model="formData.cardName"
             id="card-name"
             placeholder="John Doe"
             required
@@ -21,9 +22,10 @@
             type="text"
             pattern="\d*"
             maxlength="16"
-            name="card-number"
+            name="cardNumber"
+            v-model="formData.cardNumber"
             id="card-number"
-            placeholder="1111 2222 3333 4444"
+            placeholder="1111222233334444"
             required
           />
         </div>
@@ -38,7 +40,8 @@
           <label>有效期限</label>
           <input
             type="text"
-            name="card-expiration"
+            name="cardExpiration"
+            v-model="formData.cardExpiration"
             id="card-expiration"
             placeholder="MM/YY"
             required
@@ -50,7 +53,8 @@
             type="text"
             pattern="\d*"
             maxlength="3"
-            name="card-code"
+            name="cardCode"
+            v-model="formData.cardCode"
             id="card-code"
             placeholder="123"
             required
@@ -60,3 +64,11 @@
     </div>
   </div>
 </template>
+
+<script>
+import { initFormData } from './../utils/mixins'
+export default {
+  name: 'PurchasePayment',
+  mixins: [initFormData],
+}
+</script>

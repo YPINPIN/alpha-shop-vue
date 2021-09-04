@@ -20,17 +20,17 @@ const routes = [
       {
         path: 'address',
         name: 'purchase-address',
-        component: () => import('../views/PurchaseAddress.vue')
+        components: { address: () => import('../views/PurchaseAddress.vue') }
       },
       {
         path: 'delivery',
         name: 'purchase-delivery',
-        component: () => import('../views/PurchaseDelivery.vue')
+        components: { delivery: () => import('../views/PurchaseDelivery.vue') }
       },
       {
         path: 'payment',
         name: 'purchase-payment',
-        component: () => import('../views/PurchasePayment.vue')
+        components: { payment: () => import('../views/PurchasePayment.vue') }
       },
     ]
   },
