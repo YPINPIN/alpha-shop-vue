@@ -35,6 +35,25 @@
       :currentStep="currentStep"
       @after-button-click="afterButtonClick"
     />
+    <!-- modal -->
+    <Modal title="結帳" v-show="modalShow" @close="modalShow = false">
+      <template v-slot:body>
+        <ul class="info">
+          <li v-for="(key, index) in Object.keys(formData)" :key="index">
+            {{ key }} : {{ formData[key] }}
+          </li>
+          <hr />
+          <li>cartTotal : {{ cartTotal }}</li>
+          <li>deliveryValue : {{ deliveryValue }}</li>
+          <li>total : {{ total }}</li>
+        </ul>
+        <div class="button-group">
+          <button class="btnDone" @click="modalShow = !modalShow">
+            確認下單
+          </button>
+        </div>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -42,6 +61,7 @@
 import PurchaseStepper from '../components/PurchaseStepper.vue'
 import PurchaseCart from '../components/PurchaseCart.vue'
 import PurchaseBtnControl from '../components/PurchaseBtnControl.vue'
+import Modal from '../components/Modal.vue'
 
 // 購物車商品資料
 const dummyCartData = {
@@ -70,6 +90,7 @@ export default {
     PurchaseStepper,
     PurchaseCart,
     PurchaseBtnControl,
+    Modal,
   },
   created() {
     this.fetchCartData()
@@ -243,6 +264,8 @@ export default {
       },
       // 購物車商品資料
       cartProducts: [],
+      // 結帳資訊顯示開關
+      modalShow: false,
     }
   },
   computed: {
@@ -317,19 +340,15 @@ export default {
       if (this.currentStep >= steps.length) {
         this.currentStep = steps.length - 1
         // 顯示購物車結果
-        console.log('------顯示購物車結果-------')
-        for (let key of Object.keys(this.formData)) {
-          console.log(key + ': ' + this.formData[key])
-        }
-        console.log('total:', this.total)
+        this.modalShow = !this.modalShow
       }
     },
   },
   watch: {
     formData: {
       handler: function() {
-        // 儲存表單資料
-        console.log('saveformData')
+        // TODO:儲存表單資料 localStorage
+        // console.log('saveformData')
       },
       deep: true,
     },
@@ -344,3 +363,22 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+// Modal
+.info {
+  padding: 0 20px;
+  margin-bottom: 20px;
+}
+.button-group {
+  text-align: center;
+}
+.btnDone {
+  text-align: center;
+  width: 156px;
+  height: 46px;
+  border-radius: 8px;
+  color: $white;
+  background-color: $btn-control-next-color;
+}
+</style>
