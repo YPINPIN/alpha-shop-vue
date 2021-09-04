@@ -1,8 +1,6 @@
 /*Cart css*/
 .cart {
   margin-top: 32px;
-  // TODO:測試用
-  // border: 1px solid blue;
   .cart-panel {
     width: 100%;
     border: 1px solid $light-gray;
@@ -18,6 +16,24 @@
     }
     // 購物籃資料
     &__product-list {
+      padding-right: 12px;
+      max-height: 305px;
+      overflow-y: auto;
+      // scrollbar設定
+      &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        background-color: $light-gray;
+      }
+      &::-webkit-scrollbar {
+        width: 12px;
+        background-color: $light-gray;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: $dark-gray;
+      }
       // 每筆品項
       &__product {
         margin: 18px 0;

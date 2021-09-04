@@ -38,5 +38,14 @@ export default {
       required: true,
     },
   },
+  watch: {
+    formData: {
+      // 貨運方式變更
+      handler: function() {
+        this.$emit('after-delivery-select', this.formData.deliveryType)
+      },
+      deep: true,
+    },
+  },
 }
 </script>

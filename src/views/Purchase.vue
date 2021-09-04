@@ -5,23 +5,31 @@
     <!-- form-panel -->
     <section class="form-panel">
       <form id="form" @submit.stop.prevent="submitForm">
-        <!-- address, delivery, payment -->
+        <!-- address -->
         <router-view
           name="address"
           :address="address"
           :initial-form-data="formData"
         />
+        <!-- delivery -->
         <router-view
           name="delivery"
           :deliveries="deliveries"
           :initial-form-data="formData"
+          @after-delivery-select="afterDeliverySelect"
         />
+        <!-- payment -->
         <router-view name="payment" :initial-form-data="formData" />
         <button ref="formSubmit" type="submit" class="d-none"></button>
       </form>
     </section>
     <!-- cart -->
-    <PurchaseCart />
+    <PurchaseCart
+      :cart-products="cartProducts"
+      :delivery-price="deliveryPrice"
+      :total="total"
+      @after-count-click="afterCountClick"
+    />
     <!-- btn-control -->
     <PurchaseBtnControl
       :currentStep="currentStep"
@@ -35,12 +43,36 @@ import PurchaseStepper from '../components/PurchaseStepper.vue'
 import PurchaseCart from '../components/PurchaseCart.vue'
 import PurchaseBtnControl from '../components/PurchaseBtnControl.vue'
 
+// 購物車商品資料
+const dummyCartData = {
+  // 商品
+  products: [
+    {
+      productId: 1,
+      photo: 'cart/Photo1@2x.png',
+      title: '破壞補丁修身牛仔褲',
+      price: 3999,
+      num: 1,
+    },
+    {
+      productId: 2,
+      photo: 'cart/Photo2@2x.png',
+      title: '刷色直筒牛仔褲',
+      price: 1299,
+      num: 1,
+    },
+  ],
+}
+
 export default {
   name: 'Purchase',
   components: {
     PurchaseStepper,
     PurchaseCart,
     PurchaseBtnControl,
+  },
+  created() {
+    this.fetchCartData()
   },
   data() {
     return {
@@ -54,6 +86,7 @@ export default {
       },
       // 步驟紀錄
       currentStep: 0,
+      // 地址表單選單資料
       address: {
         // 稱謂
         salutations: [
@@ -208,9 +241,59 @@ export default {
         cardExpiration: '',
         cardCode: '',
       },
+      // 購物車商品資料
+      cartProducts: [],
     }
   },
+  computed: {
+    // 運費價格文字
+    deliveryPrice() {
+      const delivery = this.getDelivery(this.formData.deliveryType)
+      return delivery ? delivery.price : '免費'
+    },
+    // 運費
+    deliveryValue() {
+      const delivery = this.getDelivery(this.formData.deliveryType)
+      return delivery ? delivery.value : 0
+    },
+    // 購物總費用
+    cartTotal() {
+      let cartSum = 0
+      this.cartProducts.forEach((product) => {
+        cartSum += product.price * product.num
+      })
+      return cartSum
+    },
+    // 總計
+    total() {
+      return this.cartTotal + this.deliveryValue
+    },
+  },
   methods: {
+    // 取得購物車商品資料
+    fetchCartData() {
+      this.cartProducts = [...dummyCartData.products]
+    },
+    // 取得運費資料
+    getDelivery(type) {
+      return this.deliveries.find((delivery) => delivery.type === type)
+    },
+    // 更新選擇的貨運方式
+    afterDeliverySelect(type) {
+      this.formData.deliveryType = type
+    },
+    // 購物車數量控制
+    afterCountClick(productId, bIsAdd) {
+      const product = this.cartProducts.find(
+        (product) => product.productId === productId
+      )
+      if (bIsAdd) {
+        product.num++
+      } else if (product.num > 0) {
+        product.num--
+      }
+    },
+    // 步驟按鈕控制
     afterButtonClick(target) {
       if (target.matches('#btn-next')) {
         // 表單送出
@@ -220,6 +303,7 @@ export default {
         this.currentStep--
       }
     },
+    // 表單成功送出、紀錄更新
     submitForm(e) {
       const form = e.target
       const data = new FormData(form)
@@ -237,18 +321,20 @@ export default {
         for (let key of Object.keys(this.formData)) {
           console.log(key + ': ' + this.formData[key])
         }
+        console.log('total:', this.total)
       }
     },
   },
   watch: {
     formData: {
       handler: function() {
+        // 儲存表單資料
         console.log('saveformData')
       },
       deep: true,
     },
     currentStep() {
-      console.log('currentStep change: ', this.currentStep)
+      // console.log('currentStep change: ', this.currentStep)
       const steps = this.stepper.steps
       if (this.currentStep < steps.length) {
         // 切換路由
