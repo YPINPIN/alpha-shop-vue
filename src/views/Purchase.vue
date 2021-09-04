@@ -10,6 +10,7 @@
       </form>
     </section>
     <!-- cart -->
+    <PurchaseCart />
     <!-- btn-control -->
     <PurchaseBtnControl
       :currentStep="currentStep"
@@ -20,12 +21,14 @@
 
 <script>
 import PurchaseStepper from '../components/PurchaseStepper.vue'
+import PurchaseCart from '../components/PurchaseCart.vue'
 import PurchaseBtnControl from '../components/PurchaseBtnControl.vue'
 
 export default {
   name: 'Purchase',
   components: {
     PurchaseStepper,
+    PurchaseCart,
     PurchaseBtnControl,
   },
   data() {

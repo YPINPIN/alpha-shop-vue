@@ -1,0 +1,121 @@
+/*Cart css*/
+.cart {
+  margin-top: 32px;
+  // TODO:測試用
+  // border: 1px solid blue;
+  .cart-panel {
+    width: 100%;
+    border: 1px solid $light-gray;
+    border-radius: 8px;
+    background-color: $white;
+    padding: 0 16px;
+    // 標題 桌機板顯示
+    &__title {
+      @include font-setting(18px, bold);
+      line-height: 22px;
+      margin-bottom: 34px;
+      display: none;
+    }
+    // 購物籃資料
+    &__product-list {
+      // 每筆品項
+      &__product {
+        margin: 18px 0;
+        height: 100px;
+        // 左側圖片區
+        &__left-content {
+          height: 100%;
+          max-width: 100px;
+          img {
+            border-radius: 4px;
+          }
+        }
+        // 右側控制區
+        &__right-content {
+          text-align: right;
+          &__info-wrapper {
+            margin-bottom: 18px;
+            &__title {
+              @include font-setting(16px, normal);
+              line-height: 24px;
+              margin-bottom: 18px;
+            }
+            &__count-wrapper {
+              @include font-setting(14px, bold, $black, $inter-font);
+              &__btn-minus,
+              &__btn-add {
+                background-color: $light-gray;
+                border-radius: 50%;
+                width: 26px;
+                height: 26px;
+              }
+              &__count {
+                margin: 0 20px;
+              }
+            }
+          }
+          &__price {
+            @include font-setting(16px, bold, $black, $nunito-sans-font);
+            line-height: 22px;
+          }
+        }
+      }
+    }
+    // 下方總計
+    &__delivery,
+    &__total {
+      margin: 16px 0;
+      padding-top: 16px;
+      border-top: 1px solid $light-gray;
+      &__title {
+        @include font-setting(14px);
+      }
+      &__value {
+        @include font-setting(14px, bold, $black, $nunito-sans-font);
+      }
+    }
+  }
+}
+
+/********* Cart 桌機版樣式 *********/
+@media screen and (min-width: 576px) {
+  .cart {
+    .cart-panel {
+      padding: 0 24px;
+      padding-top: 32px;
+      // 標題 桌機板顯示
+      &__title {
+        display: block;
+      }
+      // 購物籃資料
+      &__product-list {
+        // 每筆品項
+        &__product {
+          margin: 34px 0;
+          // 右側控制區
+          &__right-content {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            margin-left: 21px;
+            height: 100%;
+            &__info-wrapper {
+              text-align: left;
+            }
+          }
+        }
+      }
+      // 下方總計
+      &__delivery,
+      &__total {
+        margin: 32px 0;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .cart {
+    margin-top: 80px;
+  }
+}
