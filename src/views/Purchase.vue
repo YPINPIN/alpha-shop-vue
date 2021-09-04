@@ -212,12 +212,12 @@ export default {
   },
   methods: {
     afterButtonClick(target) {
-      const steps = this.stepper.steps
       if (target.matches('#btn-next')) {
         // 表單送出
         this.$refs.formSubmit.click()
       } else if (target.matches('#btn-prev')) {
-        this.$router.push(steps[this.currentStep - 1].path)
+        // 上一步驟
+        this.currentStep--
       }
     },
     submitForm(e) {
@@ -225,16 +225,15 @@ export default {
       const data = new FormData(form)
       // 紀錄表單資料
       for (let [key, value] of data.entries()) {
-        console.log(key + ': ' + value)
         this.formData[key] = value
       }
 
       const steps = this.stepper.steps
-      if (this.currentStep < steps.length - 1) {
-        // 切換路由
-        this.$router.push(steps[this.currentStep + 1].path)
-      } else {
+      this.currentStep++
+      if (this.currentStep >= steps.length) {
+        this.currentStep = steps.length - 1
         // 顯示購物車結果
+        console.log('------顯示購物車結果-------')
         for (let key of Object.keys(this.formData)) {
           console.log(key + ': ' + this.formData[key])
         }
@@ -242,11 +241,19 @@ export default {
     },
   },
   watch: {
-    $route(to) {
-      const currentStep = this.stepper.steps.findIndex(
-        (step) => step.path.name === to.name
-      )
-      this.currentStep = currentStep != -1 ? currentStep : 0
+    formData: {
+      handler: function() {
+        console.log('saveformData')
+      },
+      deep: true,
+    },
+    currentStep() {
+      console.log('currentStep change: ', this.currentStep)
+      const steps = this.stepper.steps
+      if (this.currentStep < steps.length) {
+        // 切換路由
+        this.$router.push(steps[this.currentStep].path)
+      }
     },
   },
 }
