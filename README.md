@@ -1,6 +1,7 @@
 # alpha-shop-vue
 
 AlphaCamp Project : ALPHA-Shop Vue 版練習
+
 切版練習版本：https://github.com/YPINPIN/ALPHA-Shop
 
 ## 畫面演示
