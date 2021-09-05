@@ -63,6 +63,27 @@ import PurchaseCart from '../components/PurchaseCart.vue'
 import PurchaseBtnControl from '../components/PurchaseBtnControl.vue'
 import Modal from '../components/Modal.vue'
 
+// 購物車商品資料
+const dummyCartData = {
+  // 商品
+  products: [
+    {
+      productId: 1,
+      photo: 'cart/Photo1@2x.png',
+      title: '破壞補丁修身牛仔褲',
+      price: 3999,
+      num: 1,
+    },
+    {
+      productId: 2,
+      photo: 'cart/Photo2@2x.png',
+      title: '刷色直筒牛仔褲',
+      price: 1299,
+      num: 1,
+    },
+  ],
+}
+
 // localStorage
 const storage = {
   setFormData(data) {
@@ -97,27 +118,16 @@ const storage = {
   getCompleteStep() {
     return JSON.parse(localStorage.getItem('completeStep')) || 0
   },
-}
-
-// 購物車商品資料
-const dummyCartData = {
-  // 商品
-  products: [
-    {
-      productId: 1,
-      photo: 'cart/Photo1@2x.png',
-      title: '破壞補丁修身牛仔褲',
-      price: 3999,
-      num: 1,
-    },
-    {
-      productId: 2,
-      photo: 'cart/Photo2@2x.png',
-      title: '刷色直筒牛仔褲',
-      price: 1299,
-      num: 1,
-    },
-  ],
+  setCartProducts(data) {
+    localStorage.setItem('cartProducts', JSON.stringify(data))
+  },
+  getCartProducts() {
+    return (
+      JSON.parse(localStorage.getItem('cartProducts')) || [
+        ...dummyCartData.products,
+      ]
+    )
+  },
 }
 
 export default {
@@ -130,6 +140,11 @@ export default {
   },
   created() {
     this.fetchCartData()
+    // 為了解決從http://localhost:8080/#/purchase/payment 直接輸入 http://localhost:8080/ 跳轉
+    // 不會觸發checkRouteStep，導致currentStep錯誤，直接created呼叫一次
+    if (this.$route.name === 'purchase-address') {
+      this.checkRouteStep(this.$route, { name: 'purchase-address' })
+    }
   },
   data() {
     return {
@@ -321,7 +336,7 @@ export default {
   methods: {
     // 取得購物車商品資料
     fetchCartData() {
-      this.cartProducts = [...dummyCartData.products]
+      this.cartProducts = storage.getCartProducts()
     },
     // 取得運費資料
     getDelivery(type) {
@@ -389,7 +404,6 @@ export default {
       const routeStep = this.stepper.steps.findIndex(
         (step) => step.path.name === to.name
       )
-      console.log('routeStep', routeStep)
       if (routeStep <= this.completeStep) {
         // 步驟已完成，更新目前步驟
         this.currentStep = routeStep != -1 ? routeStep : 0
@@ -418,6 +432,13 @@ export default {
     completeStep() {
       // 儲存已完成步驟
       storage.setCompleteStep(this.completeStep)
+    },
+    cartProducts: {
+      handler: function() {
+        // 儲存購物車商品資料
+        storage.setCartProducts(this.cartProducts)
+      },
+      deep: true,
     },
   },
 }
