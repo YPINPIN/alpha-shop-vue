@@ -63,6 +63,42 @@ import PurchaseCart from '../components/PurchaseCart.vue'
 import PurchaseBtnControl from '../components/PurchaseBtnControl.vue'
 import Modal from '../components/Modal.vue'
 
+// localStorage
+const storage = {
+  setFormData(data) {
+    localStorage.setItem('formData', JSON.stringify(data))
+  },
+  getFormData() {
+    return (
+      JSON.parse(localStorage.getItem('formData')) || {
+        salutation: '',
+        name: '',
+        phone: '',
+        mail: '',
+        city: '',
+        address: '',
+        deliveryType: '',
+        cardName: '',
+        cardNumber: '',
+        cardExpiration: '',
+        cardCode: '',
+      }
+    )
+  },
+  setCurrentStep(step) {
+    localStorage.setItem('currentStep', JSON.stringify(step))
+  },
+  getCurrentStep() {
+    return JSON.parse(localStorage.getItem('currentStep')) || 0
+  },
+  setCompleteStep(step) {
+    localStorage.setItem('completeStep', JSON.stringify(step))
+  },
+  getCompleteStep() {
+    return JSON.parse(localStorage.getItem('completeStep')) || 0
+  },
+}
+
 // 購物車商品資料
 const dummyCartData = {
   // 商品
@@ -105,8 +141,6 @@ export default {
           { title: '付款資訊', path: { name: 'purchase-payment' } },
         ],
       },
-      // 步驟紀錄
-      currentStep: 0,
       // 地址表單選單資料
       address: {
         // 稱謂
@@ -248,20 +282,12 @@ export default {
           value: 500,
         },
       ],
+      // 當前步驟紀錄
+      currentStep: storage.getCurrentStep(),
+      // 已完成步驟紀錄
+      completeStep: storage.getCompleteStep(),
       // 表單資料
-      formData: {
-        salutation: '',
-        name: '',
-        phone: '',
-        mail: '',
-        city: '',
-        address: '',
-        deliveryType: '',
-        cardName: '',
-        cardNumber: '',
-        cardExpiration: '',
-        cardCode: '',
-      },
+      formData: storage.getFormData(),
       // 購物車商品資料
       cartProducts: [],
       // 結帳資訊顯示開關
@@ -321,9 +347,11 @@ export default {
       if (target.matches('#btn-next')) {
         // 表單送出
         this.$refs.formSubmit.click()
-      } else if (target.matches('#btn-prev')) {
+      } else if (target.matches('#btn-prev') && this.currentStep > 0) {
         // 上一步驟
+        // 更新當前步驟
         this.currentStep--
+        this.checkCurrentStep()
       }
     },
     // 表單成功送出、紀錄更新
@@ -335,30 +363,61 @@ export default {
         this.formData[key] = value
       }
 
-      const steps = this.stepper.steps
+      // 更新當前步驟
       this.currentStep++
+      if (this.currentStep > this.completeStep) {
+        // 更新已完成步驟
+        this.completeStep = this.currentStep
+      }
+      this.checkCurrentStep()
+    },
+    // 檢查步驟進度
+    checkCurrentStep() {
+      const steps = this.stepper.steps
       if (this.currentStep >= steps.length) {
         this.currentStep = steps.length - 1
         // 顯示購物車結果
         this.modalShow = !this.modalShow
+      } else {
+        // 切換路由
+        this.$router.push(steps[this.currentStep].path)
+      }
+    },
+    // 檢查路由步驟
+    checkRouteStep(to, from) {
+      // 取得路由對應步驟
+      const routeStep = this.stepper.steps.findIndex(
+        (step) => step.path.name === to.name
+      )
+      console.log('routeStep', routeStep)
+      if (routeStep <= this.completeStep) {
+        // 步驟已完成，更新目前步驟
+        this.currentStep = routeStep != -1 ? routeStep : 0
+      } else {
+        // 步驟尚未完成，返回
+        alert('資料尚未完成')
+        this.$router.push(from)
       }
     },
   },
   watch: {
+    $route(to, from) {
+      this.checkRouteStep(to, from)
+    },
     formData: {
       handler: function() {
-        // TODO:儲存表單資料 localStorage
-        // console.log('saveformData')
+        // 儲存表單資料
+        storage.setFormData(this.formData)
       },
       deep: true,
     },
     currentStep() {
-      // console.log('currentStep change: ', this.currentStep)
-      const steps = this.stepper.steps
-      if (this.currentStep < steps.length) {
-        // 切換路由
-        this.$router.push(steps[this.currentStep].path)
-      }
+      // 儲存當前步驟
+      storage.setCurrentStep(this.currentStep)
+    },
+    completeStep() {
+      // 儲存已完成步驟
+      storage.setCompleteStep(this.completeStep)
     },
   },
 }

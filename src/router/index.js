@@ -32,7 +32,7 @@ const routes = [
         name: 'purchase-payment',
         components: { payment: () => import('../views/PurchasePayment.vue') }
       },
-    ]
+    ],
   },
   {
     path: '*',
