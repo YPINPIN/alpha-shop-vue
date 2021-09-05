@@ -5,7 +5,7 @@ AlphaCamp Project : ALPHA-Shop Vue 版練習
 
 ## 畫面演示
 
-https://ypinpin.github.io/ALPHA-Shop/
+https://ypinpin.github.io/alpha-shop-vue/
 
 ![mobile](./mobile.gif)
 
