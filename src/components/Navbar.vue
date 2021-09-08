@@ -11,13 +11,17 @@
     <input type="checkbox" id="navbar__toggle" class="navbar__toggle d-none" />
     <ul class="navbar__nav-list">
       <!-- nav-list -->
-      <li v-for="link in navList" :key="link.id" class="navbar__nav-list__item">
+      <li
+        v-for="(link, index) in navList"
+        :key="index"
+        class="navbar__nav-list__item"
+      >
         <a href="#" class="navbar__nav-list__link">{{ link.title }}</a>
       </li>
       <!-- tool-list -->
       <li class="navbar__nav-list__item">
         <section class="navbar__tool-list">
-          <a v-for="tool in toolList" :key="tool.id" href="#">
+          <a v-for="(tool, index) in toolList" :key="index" href="#">
             <img
               :src="assetImg(tool.image)"
               alt=""
@@ -34,7 +38,6 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from 'uuid'
 import { assetImgMethod } from './../utils/mixins'
 
 export default {
@@ -42,16 +45,16 @@ export default {
   data() {
     return {
       navList: [
-        { id: uuidv4(), title: '男款' },
-        { id: uuidv4(), title: '女款' },
-        { id: uuidv4(), title: '最新消息' },
-        { id: uuidv4(), title: '客製商品' },
-        { id: uuidv4(), title: '聯絡我們' },
+        { title: '男款' },
+        { title: '女款' },
+        { title: '最新消息' },
+        { title: '客製商品' },
+        { title: '聯絡我們' },
       ],
       toolList: [
-        { id: uuidv4(), image: 'nav/search@2x.png' },
-        { id: uuidv4(), image: 'nav/cart@2x.png' },
-        { id: uuidv4(), image: 'nav/mode@2x.png' },
+        { image: 'nav/search@2x.png' },
+        { image: 'nav/cart@2x.png' },
+        { image: 'nav/mode@2x.png' },
       ],
     }
   },
