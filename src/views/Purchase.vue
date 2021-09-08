@@ -33,7 +33,8 @@
     <!-- btn-control -->
     <PurchaseBtnControl
       :currentStep="currentStep"
-      @after-button-click="afterButtonClick"
+      @prev-button-click="prevButtonClick"
+      @next-button-click="nextButtonClick"
     />
     <!-- modal -->
     <Modal title="結帳" v-show="modalShow" @close="modalShow = false">
@@ -198,17 +199,18 @@ export default {
         product.num--
       }
     },
-    // 步驟按鈕控制
-    afterButtonClick(target) {
-      if (target.matches('#btn-next')) {
-        // 表單送出
-        this.$refs.formSubmit.click()
-      } else if (target.matches('#btn-prev') && this.currentStep > 0) {
-        // 上一步驟
+    // 步驟按鈕控制 - 上一步驟
+    prevButtonClick() {
+      if (this.currentStep > 0) {
         // 更新當前步驟
         this.currentStep--
         this.checkCurrentStep()
       }
+    },
+    // 步驟按鈕控制 - 下一步驟
+    nextButtonClick() {
+      // 表單送出
+      this.$refs.formSubmit.click()
     },
     // 表單成功送出、紀錄更新
     submitForm(e) {

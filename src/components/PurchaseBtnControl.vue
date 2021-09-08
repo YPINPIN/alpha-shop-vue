@@ -6,14 +6,14 @@
       <button
         :class="['btn-control__btn-prev', { disabled: currentStep === 0 }]"
         id="btn-prev"
-        @click.stop.prevent="handleButtonClick"
+        @click.stop.prevent="handlePrevButtonClick"
       >
         上一步
       </button>
       <button
         :class="['btn-control__btn-next', { active: true }]"
         id="btn-next"
-        @click.stop.prevent="handleButtonClick"
+        @click.stop.prevent="handleNextButtonClick"
       >
         下一步
       </button>
@@ -30,9 +30,11 @@ export default {
     },
   },
   methods: {
-    handleButtonClick(event) {
-      const target = event.target
-      this.$emit('after-button-click', target)
+    handlePrevButtonClick() {
+      this.$emit('prev-button-click')
+    },
+    handleNextButtonClick() {
+      this.$emit('next-button-click')
     },
   },
 }
